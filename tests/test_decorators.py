@@ -32,7 +32,7 @@ class HTTPDecoratorsTest(TestCase):
     async def test_parse_body(self):
         async with HttpClientContext(self.app) as client:
             resp = await client.post(
-                "/body", json=Model(name="Dalton", numero=42).json()
+                "/body", json=Model(name="Dalton", numero=42).dict()
             )
             data = await resp.json()
             self.assertEqual({"name": "Dalton", "numero": 42}, data)

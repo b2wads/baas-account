@@ -9,7 +9,7 @@ def parse_body(model: Type):
     def _wrap_(f):
         async def _wrap(req: web.Request):
             data = await req.json()
-            acc = model(**json.loads(data))
+            acc = model(**data)
             req["types_registry"].set(acc)
             return await call_http_handler(req, f)
 
