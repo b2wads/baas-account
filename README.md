@@ -75,3 +75,8 @@ Temos 4 endpoints para serem implementados nesse projeto:
 - `POST /accounts/<id>/debito`
 
 O Endpoint HTTP já está escrito mas o Servive ainda não faz nada. A implementação deve preencher o código do `AccountService.debita()`.
+
+
+- `POST /accounts`
+
+O Endpoint HTTP já está escrito mas o Servive ainda não faz nada. A implementação deve preencher o código do `AccountService.save()`.
