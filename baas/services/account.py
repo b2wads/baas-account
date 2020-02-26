@@ -24,8 +24,7 @@ class AccountService:
 
     @classmethod
     def save_account(cls, acc_id: str, acc_data: Account) -> Account:
-        cls.storage.save(acc_id, acc_data)
-        return acc_data
+        raise NotImplementedError
 
     @classmethod
     def get_by_id(cls, acc_id: str) -> Account:
