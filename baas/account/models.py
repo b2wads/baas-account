@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -8,10 +10,10 @@ class Account(BaseModel):
 
 
 class Saque(BaseModel):
-    data: str
+    data: Optional[str]
     valor: int
 
 
 class Credito(BaseModel):
-    data: str
+    data: Optional[str]
     valor: int
