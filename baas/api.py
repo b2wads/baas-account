@@ -26,7 +26,10 @@ async def list_accounts() -> List[Account]:
 @parse_id(str)
 async def get_by_id(acc_id: str) -> Account:
     acc = AccountService.get_by_id(acc_id)
-    return web.json_response(acc.dict())
+    if acc:
+        return web.json_response(acc.dict())
+    else:
+        return web.json_response(None)
 
 
 @app.route(
@@ -43,8 +46,10 @@ async def debita_account(acc_id: str, saque: Saque) -> Saque:
     ["/accounts/{acc_id}/credito"], type=RouteTypes.HTTP, methods=["POST"]
 )
 @parse_id(str)
-async def credita_account(acc: Account) -> Credito:
-    raise NotImplementedError
+@parse_body(Credito)
+async def credita_account(acc_id: str, credito: Credito) -> Credito:
+    AccountService.credita(acc_id, credito)
+    return web.json_response(credito.dict())
 
 
 @app.route(["/health"], type=RouteTypes.HTTP, methods=["GET"])
