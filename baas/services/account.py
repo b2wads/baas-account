@@ -5,6 +5,9 @@ from baas.account.models import Account, Saque
 
 class AccountStorage:
     def __init__(self):
+        self.clear()
+
+    def clear(self):
         self.__data = dict()
 
     def save(self, acc_id: str, acc_data: Account) -> Account:
