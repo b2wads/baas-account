@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from baas.account.models import Account, Saque
 
@@ -36,3 +36,4 @@ class AccountService:
 
     @classmethod
     def debita(cls, acc_id: str, saque: Saque) -> Optional[Account]:
+        raise NotImplementedError
