@@ -16,3 +16,9 @@ class AccountStorageTest(TestCase):
         self.storage.clear()
 
         self.assertEqual(None, self.storage.get_by_id(acc.cpf))
+
+    async def test_list(self):
+        acc = Account(nome="Dalton Barreto", cpf="42")
+        self.storage.save(acc.cpf, acc)
+
+        self.assertEqual([acc], self.storage.list())
