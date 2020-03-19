@@ -1,6 +1,60 @@
 # Banco as a Service
 
-O objetivo desse projeto é ensinar um pouco sobre testes. Esse projeto é usado na aula de testes do programa de estágio da B2W Digital.
+O objetivo desse projeto é ensinar um pouco sobre testes. A ideia é ser um cadastro simples de "contas de banco".
+
+## Modelo
+
+Cada registro de uma conta tem a seguinte estrutura?
+
+```python
+class Account(BaseModel):
+    nome: str
+    cpf: str
+    saldo: int = 10000
+```
+Cada contas novas o saldo padrão é `10000`. Usamoms o saldo como sendo um inteiro apenas por uma quesão de simplificação.
+
+## Funcionalidades
+
+Essas são as funcionalidades que esse projeto precisa implementar:
+
+ - Criar nova conta
+ - Retornar os dados de uma conta
+ - Debitar um valor de uma conta
+ - Creditar um valor em uma conta
+
+
+## Interface HTTP
+
+Aqui está descrito como será a interface HTTP desse projeto.
+
+ - `POST /accounts`: Cria uma nova conta;
+ - `GET /accounts`: Lista todas as contas criadas;
+ - `GET /accounts/{acc_id}`: Retorna os dados referentes à conta com id=`acc_id`;
+ - `POST /accounts/{acc_id}/debido`: Remove um valor da conta com id=`acc_id`;
+ - `POST /accounts/{acc_id}/credito`: Adiciona um valor à conta com id=`acc_id`;
+
+## Modelos dos Recursos HTTP
+
+Os endpoints que recebem/retornam uma conta usam o modelo `Account`, abaixo:
+
+```python
+class Account(BaseModel):
+    nome: str
+    cpf: str
+    saldo: int = 10000
+```
+
+Os endpoints que alteram o saldo de uma conta usam os modelos `Credito`, `Debito`:
+
+```python
+class Credito(BaseModel):
+  valor: int
+
+class Debito(BaseModel):
+  valor: int
+
+```
 
 # Rodando o projeto localmente
 
