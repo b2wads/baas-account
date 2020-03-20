@@ -3,9 +3,9 @@ from typing import List
 from aiohttp import web
 from asyncworker import RouteTypes
 
-from baas.account.models import Account, Debito, Credito
 from baas.app import app
 from baas.http import parse_body, parse_id
+from baas.models import Account, Debito, Credito
 from baas.services.account import AccountService
 
 

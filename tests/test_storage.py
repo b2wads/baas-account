@@ -1,6 +1,6 @@
 from asynctest import TestCase
 
-from baas.account.models import Account
+from baas.models import Account
 from baas.services.account import AccountStorage
 
 
