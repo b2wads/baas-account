@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from baas.account.models import Account, Saque
+from baas.account.models import Account, Debito, Credito
 
 
 class AccountStorage:
@@ -31,12 +31,16 @@ class AccountService:
 
     @classmethod
     def get_by_id(cls, acc_id: str) -> Optional[Account]:
-        return cls.storage.get_by_id(acc_id)
+        raise NotImplementedError
 
     @classmethod
     def list(cls) -> List[Account]:
-        return cls.storage.list()
+        raise NotImplementedError
 
     @classmethod
-    def debita(cls, acc_id: str, saque: Saque) -> Optional[Account]:
+    def debita(cls, acc_id: str, debito: Debito) -> Optional[Account]:
+        raise NotImplementedError
+
+    @classmethod
+    def credita(cls, acc_id: str, credito: Credito):
         raise NotImplementedError

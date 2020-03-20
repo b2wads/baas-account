@@ -3,7 +3,7 @@ from typing import List
 from aiohttp import web
 from asyncworker import RouteTypes
 
-from baas.account.models import Account, Saque, Credito
+from baas.account.models import Account, Debito, Credito
 from baas.app import app
 from baas.http import parse_body, parse_id
 from baas.services.account import AccountService
@@ -36,10 +36,10 @@ async def get_by_id(acc_id: str) -> Account:
     ["/accounts/{acc_id}/debito"], type=RouteTypes.HTTP, methods=["POST"]
 )
 @parse_id(str)
-@parse_body(Saque)
-async def debita_account(acc_id: str, saque: Saque) -> Saque:
-    AccountService.debita(acc_id, saque)
-    return web.json_response(saque.dict())
+@parse_body(Debito)
+async def debita_account(acc_id: str, debito: Debito) -> Debito:
+    AccountService.debita(acc_id, debito)
+    return web.json_response(debito.dict())
 
 
 @app.route(

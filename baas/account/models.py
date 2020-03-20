@@ -9,7 +9,7 @@ class Account(BaseModel):
     saldo: int = 10000
 
 
-class Saque(BaseModel):
+class Debito(BaseModel):
     data: Optional[str]
     valor: int
 
