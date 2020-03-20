@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import List
+from typing import List, Optional
 
 from aiohttp import web
 from asynctest import TestCase
@@ -99,3 +99,21 @@ class HTTPRouteDecoratorTest(TestCase):
 
             data = await resp.json()
             self.assertEqual([User(id="42").dict(), User(id="44").dict()], data)
+
+    async def test_can_return_optional_model(self):
+        class User(BaseModel):
+            id: str
+
+        @self.app.http(["/users/{user_id}/{other_id}"])
+        @parse_path
+        async def _get_user_by_id(
+            user_id: str, other_id: str
+        ) -> Optional[User]:
+            return None
+
+        async with HttpClientContext(self.app) as client:
+            resp = await client.get("/users/42/44")
+            self.assertEqual(HTTPStatus.OK, resp.status)
+
+            data = await resp.json()
+            self.assertEqual({}, data)

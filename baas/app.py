@@ -21,6 +21,8 @@ class MyApp(App):
             try:
                 if isinstance(response, list):
                     return web.json_response([o.dict() for o in response])
+                elif response is None:
+                    return web.json_response({})
 
                 return web.json_response(response.dict())
             except AttributeError:
