@@ -1,7 +1,6 @@
 from typing import List
 
 from aiohttp import web
-from asyncworker import RouteTypes
 from asyncworker.http.decorators import parse_path
 
 from baas.app import app
@@ -10,20 +9,20 @@ from baas.models import Account, Debito, Credito
 from baas.services.account import AccountService
 
 
-@app.route(["/accounts"], type=RouteTypes.HTTP, methods=["POST"])
+@app.http(["/accounts"], methods=["POST"])
 @parse_body(Account)
 async def create_account(acc: Account) -> Account:
     acc = AccountService.save_account(acc.cpf, acc)
     return web.json_response(acc.dict())
 
 
-@app.route(["/accounts"], type=RouteTypes.HTTP, methods=["GET"])
+@app.http(["/accounts"])
 async def list_accounts() -> List[Account]:
     acc_list = AccountService.list()
     return web.json_response([acc.dict() for acc in acc_list])
 
 
-@app.route(["/accounts/{acc_id}"], type=RouteTypes.HTTP, methods=["GET"])
+@app.http(["/accounts/{acc_id}"])
 @parse_path
 async def get_by_id(acc_id: str) -> Account:
     acc = AccountService.get_by_id(acc_id)
@@ -33,9 +32,7 @@ async def get_by_id(acc_id: str) -> Account:
         return web.json_response(None)
 
 
-@app.route(
-    ["/accounts/{acc_id}/debito"], type=RouteTypes.HTTP, methods=["POST"]
-)
+@app.http(["/accounts/{acc_id}/debito"], methods=["POST"])
 @parse_body(Debito)
 @parse_path
 async def debita_account(acc_id: str, debito: Debito) -> Debito:
@@ -43,9 +40,7 @@ async def debita_account(acc_id: str, debito: Debito) -> Debito:
     return web.json_response(debito.dict())
 
 
-@app.route(
-    ["/accounts/{acc_id}/credito"], type=RouteTypes.HTTP, methods=["POST"]
-)
+@app.http(["/accounts/{acc_id}/credito"], methods=["POST"])
 @parse_path
 @parse_body(Credito)
 async def credita_account(acc_id: str, credito: Credito) -> Credito:
@@ -53,6 +48,6 @@ async def credita_account(acc_id: str, credito: Credito) -> Credito:
     return web.json_response(credito.dict())
 
 
-@app.route(["/health"], type=RouteTypes.HTTP, methods=["GET"])
+@app.http(["/health"])
 async def health():
     return web.json_response({"OK": True})
