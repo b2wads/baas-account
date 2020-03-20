@@ -1,5 +1,4 @@
-from functools import wraps
-from typing import get_type_hints, List, Type
+from typing import List
 
 from aiohttp import web
 from asyncworker import App, RouteTypes
