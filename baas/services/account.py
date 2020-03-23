@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from baas.account.models import Account, Debito, Credito
+from baas.models import Account, Debito, Credito
 
 
 class AccountStorage:
