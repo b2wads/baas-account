@@ -27,20 +27,29 @@ class AccountService:
 
     @classmethod
     def save_account(cls, acc_id: str, acc_data: Account) -> Account:
-        raise NotImplementedError
+        acc_no_banco = AccountService.get_by_id(acc_id)
+        if acc_no_banco:
+            return None
+        cls.storage.save(acc_id, acc_data)
 
     @classmethod
     def get_by_id(cls, acc_id: str) -> Optional[Account]:
-        raise NotImplementedError
+        return cls.storage.get_by_id(acc_id)
 
     @classmethod
     def list(cls) -> List[Account]:
-        raise NotImplementedError
+        return cls.storage.list()
 
     @classmethod
     def debita(cls, acc_id: str, debito: Debito) -> Optional[Account]:
-        raise NotImplementedError
+        conta = AccountService.get_by_id(acc_id)
+        if conta:
+            if debito.valor > conta.saldo:
+                raise Exception("Saldo nao pode ser negativo")
+            conta.saldo -= debito.valor
 
     @classmethod
     def credita(cls, acc_id: str, credito: Credito):
-        raise NotImplementedError
+        conta = AccountService.get_by_id(acc_id)
+        if conta:
+            conta.saldo += credito.valor
