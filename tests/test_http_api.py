@@ -4,7 +4,7 @@ from asynctest import TestCase
 from asyncworker.testing import HttpClientContext
 
 from baas.api import app
-from baas.models import Account
+from baas.models import Account, Debito, Credito
 from baas.services.account import AccountService
 
 
@@ -66,3 +66,45 @@ class AccountAPITest(TestCase):
             self.assertEqual(1, len(data))
             acc_1 = Account(**data[0])
             self.assertEqual(acc_1, acc)
+
+    async def test_debita_conta(self):
+        acc = Account(nome="Dalton", cpf="42")
+        debito = Debito(valor=300)
+        async with HttpClientContext(app) as client:
+            await client.post("/accounts", json=acc.dict())
+            resp = await client.post(
+                f"/accounts/{acc.cpf}/debito", json=debito.dict()
+            )
+
+            self.assertEqual(HTTPStatus.OK, resp.status)
+
+            data = await resp.json()
+            self.assertEqual(debito, data)
+
+            resp_salvo = await client.get(f"/accounts/{acc.cpf}")
+            acc_salva = await resp_salvo.json()
+
+            acc_modificada = Account(**acc_salva)
+
+            self.assertEqual(9700, acc_modificada.saldo)
+
+    async def test_credito_conta(self):
+        acc = Account(nome="Dalton", cpf="42")
+        credito = Credito(valor=300)
+        async with HttpClientContext(app) as client:
+            await client.post("/accounts", json=acc.dict())
+            resp = await client.post(
+                f"/accounts/{acc.cpf}/credito", json=credito.dict()
+            )
+
+            self.assertEqual(HTTPStatus.OK, resp.status)
+
+            data = await resp.json()
+            self.assertEqual(credito, data)
+
+            resp_salvo = await client.get(f"/accounts/{acc.cpf}")
+            acc_salva = await resp_salvo.json()
+
+            acc_modificada = Account(**acc_salva)
+
+            self.assertEqual(10300, acc_modificada.saldo)
