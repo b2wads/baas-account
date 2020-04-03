@@ -22,7 +22,29 @@ class AccountAPITest(TestCase):
 
     async def test_salva_conta(self):
         async with HttpClientContext(app) as client:
-            self.fail()
+            acc = Account(nome="Dalton", cpf="42")
+            resp = await client.post("/accounts", json=acc.dict())
+
+            self.assertEqual(HTTPStatus.OK, resp.status)
+            data = await resp.json()
+            self.assertEqual(acc, data)
+
+            resp_salvo = await client.get(f"/accounts/{acc.cpf}")
+            self.assertEqual(HTTPStatus.OK, resp_salvo.status)
+
+            data_salvo = await resp.json()
+            self.assertEqual(acc, data_salvo)
+
+    async def test_cria_conta_repetida(self):
+        async with HttpClientContext(app) as client:
+            acc_1 = Account(nome="Dalton", cpf="42")
+            acc_2 = Account(nome="Dalton 2", cpf="42")
+            await client.post("/accounts", json=acc_1.dict())
+            resp = await client.post("/accounts", json=acc_2.dict())
+
+            self.assertEqual(HTTPStatus.OK, resp.status)
+            data = await resp.json()
+            self.assertEqual(acc_1, data)
 
     async def test_lista_contas_banco_vazio(self):
         async with HttpClientContext(app) as client:
